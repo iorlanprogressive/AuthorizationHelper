@@ -1,4 +1,9 @@
-﻿namespace AuthorizationHelper;
+﻿using Microsoft.AspNetCore.Http;
 
-public class Class1 {
+namespace AuthorizationHelper;
+
+public class AuthorizationHelper {
+	public static (string username, string password) GetBasicCredentials(HttpRequest request) {
+		throw new NotImplementedException();
+	}
 }
