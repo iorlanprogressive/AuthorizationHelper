@@ -4,16 +4,15 @@
     <execution />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
-  <component name="KubernetesApiProvider">{
-  &quot;isMigrated&quot;: true
-}</component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="MaliciousPackageCheckinHandlerState">
     <option name="packageCheck" value="true" />
   </component>
   <component name="MarkdownSettings">
     <option name="verticalSplit" value="false" />
   </component>
-  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
   <component name="PhpRuntimeConfiguration">
     <extensions>
@@ -97,7 +96,6 @@
   <component name="TypeScriptCompiler">
     <option name="showAllErrors" value="true" />
   </component>
-  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnrealLogPanelSettings">
     <option name="showTimestamps" value="true" />
   </component>
