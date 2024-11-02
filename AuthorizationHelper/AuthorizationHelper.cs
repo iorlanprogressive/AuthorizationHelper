@@ -19,6 +19,11 @@ public class AuthorizationHelper {
 	}
 
 	public static string GetBearerToken(HttpRequest request) {
-		throw new NotImplementedException();
+		if (request.Headers.ContainsKey("Authorization")) {
+			var authHeader = request.Headers["Authorization"].ToString();
+			if (authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)) return authHeader.Substring("Bearer ".Length).Trim();
+		}
+
+		return null;
 	}
 }
