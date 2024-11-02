@@ -17,4 +17,8 @@ public class AuthorizationHelper {
 
 		return (credentials[0], credentials[1]);
 	}
+
+	public static string GetBearerToken(HttpRequest request) {
+		throw new NotImplementedException();
+	}
 }

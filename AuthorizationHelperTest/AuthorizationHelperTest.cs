@@ -40,4 +40,28 @@ public class AuthorizationHelperTests {
 		Assert.IsNull(result.username);
 		Assert.IsNull(result.password);
 	}
+
+	[Test]
+	public void GetBearerToken_WithValidBearerAuthHeader_ReturnsToken() {
+		Assert.That
+			(
+			 AuthorizationHelper.AuthorizationHelper.GetBearerToken
+				 (GetMockHttpRequest(new HeaderDictionary { { "Authorization", "Bearer valid_token" } })),
+			 Is.EqualTo("valid_token")
+			);
+	}
+
+	[Test]
+	public void GetBearerToken_WithInvalidBearerAuthHeader_ReturnsNull() {
+		Assert.IsNull
+			(
+			 AuthorizationHelper.AuthorizationHelper.GetBearerToken
+				 (GetMockHttpRequest(new HeaderDictionary { { "Authorization", "InvalidBearerToken" } }))
+			);
+	}
+
+	[Test]
+	public void GetBearerToken_WithoutBearerAuthHeader_ReturnsNull() {
+		Assert.IsNull(AuthorizationHelper.AuthorizationHelper.GetBearerToken(GetMockHttpRequest(new HeaderDictionary())));
+	}
 }
