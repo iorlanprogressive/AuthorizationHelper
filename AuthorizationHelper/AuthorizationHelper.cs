@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using Microsoft.AspNetCore.Http;
 
 namespace AuthorizationHelper;
@@ -29,6 +30,10 @@ public class AuthorizationHelper {
 	}
 
 	public static bool IsTokenExpired(string token) {
-		throw new NotImplementedException();
+		var jwtToken = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
+
+		if (jwtToken == null) return true;
+
+		return jwtToken.ValidTo < DateTime.UtcNow;
 	}
 }
