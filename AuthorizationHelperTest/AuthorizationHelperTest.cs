@@ -1,5 +1,7 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using Moq;
 
 namespace AuthorizationHelperTest;
@@ -63,5 +65,21 @@ public class AuthorizationHelperTests {
 	[Test]
 	public void GetBearerToken_WithoutBearerAuthHeader_ReturnsNull() {
 		Assert.IsNull(AuthorizationHelper.AuthorizationHelper.GetBearerToken(GetMockHttpRequest(new HeaderDictionary())));
+	}
+
+	[Test]
+	public void IsTokenExpired_ExpiredToken_ReturnsTrue() {
+		Assert.IsTrue(AuthorizationHelper.AuthorizationHelper.IsTokenExpired(CreateJwtToken(DateTime.UtcNow.AddMinutes(-1))));
+	}
+
+	[Test]
+	public void IsTokenExpired_ValidToken_ReturnsFalse() {
+		Assert.IsFalse(AuthorizationHelper.AuthorizationHelper.IsTokenExpired(CreateJwtToken(DateTime.UtcNow.AddMinutes(1))));
+	}
+
+	private string CreateJwtToken(DateTime expiration) {
+		var tokenHandler = new JwtSecurityTokenHandler();
+		var token = tokenHandler.CreateToken(new SecurityTokenDescriptor { NotBefore = DateTime.UtcNow.AddYears(-1), Expires = expiration });
+		return tokenHandler.WriteToken(token);
 	}
 }

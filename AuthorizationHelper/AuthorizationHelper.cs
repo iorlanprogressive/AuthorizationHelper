@@ -27,4 +27,8 @@ public class AuthorizationHelper {
 
 		return authHeader.Substring(7).Trim();
 	}
+
+	public static bool IsTokenExpired(string token) {
+		throw new NotImplementedException();
+	}
 }
