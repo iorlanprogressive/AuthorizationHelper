@@ -77,6 +77,51 @@ public class AuthorizationHelperTests {
 		Assert.IsFalse(AuthorizationHelper.AuthorizationHelper.IsTokenExpired(CreateJwtToken(DateTime.UtcNow.AddMinutes(1))));
 	}
 
+	[Test]
+	public void GetDigestCredentials_WithValidDigestAuthHeader_ReturnsCredentials() {
+		var result = AuthorizationHelper.AuthorizationHelper.GetDigestCredentials
+			(
+			 GetMockHttpRequest
+				 (
+				  new HeaderDictionary {
+					  {
+						  "Authorization",
+						  "Digest username=\"user\", realm=\"realm\", nonce=\"nonce\", uri=\"/uri\", response=\"response\", opaque=\"opaque\""
+					  }
+				  }
+				 )
+			);
+		Assert.AreEqual("user", result.username);
+		Assert.AreEqual("realm", result.realm);
+		Assert.AreEqual("nonce", result.nonce);
+		Assert.AreEqual("/uri", result.uri);
+		Assert.AreEqual("response", result.response);
+		Assert.AreEqual("opaque", result.opaque);
+	}
+
+	[Test]
+	public void GetDigestCredentials_WithInvalidDigestAuthHeader_ReturnsNull() {
+		var result = AuthorizationHelper.AuthorizationHelper.GetDigestCredentials
+			(GetMockHttpRequest(new HeaderDictionary { { "Authorization", "InvalidHeader" } }));
+		Assert.IsNull(result.username);
+		Assert.IsNull(result.realm);
+		Assert.IsNull(result.nonce);
+		Assert.IsNull(result.uri);
+		Assert.IsNull(result.response);
+		Assert.IsNull(result.opaque);
+	}
+
+	[Test]
+	public void GetDigestCredentials_WithoutAuthHeader_ReturnsNull() {
+		var result = AuthorizationHelper.AuthorizationHelper.GetDigestCredentials(GetMockHttpRequest(new HeaderDictionary()));
+		Assert.IsNull(result.username);
+		Assert.IsNull(result.realm);
+		Assert.IsNull(result.nonce);
+		Assert.IsNull(result.uri);
+		Assert.IsNull(result.response);
+		Assert.IsNull(result.opaque);
+	}
+
 	private string CreateJwtToken(DateTime expiration) {
 		var tokenHandler = new JwtSecurityTokenHandler();
 		var token = tokenHandler.CreateToken(new SecurityTokenDescriptor { NotBefore = DateTime.UtcNow.AddYears(-1), Expires = expiration });

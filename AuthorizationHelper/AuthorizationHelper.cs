@@ -36,4 +36,9 @@ public class AuthorizationHelper {
 
 		return jwtToken.ValidTo < DateTime.UtcNow;
 	}
+
+	public static (string username, string realm, string nonce, string uri, string response, string opaque) GetDigestCredentials
+		(HttpRequest request) {
+		throw new NotImplementedException();
+	}
 }
