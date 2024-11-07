@@ -1,11 +1,12 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using NUnit.Framework.Internal;
 
 namespace AuthorizationHelper;
 
 public class AuthorizationHelper {
-	public static (string username, string password) GetBasicCredentials(HttpRequest request) {
+	public static (string username, string password) GetBasicCredentials(HttpRequest request, ILogger logger = null) {
 		if (!request.Headers.ContainsKey("Authorization")) return (null, null);
 
 		var authHeader = request.Headers["Authorization"].ToString();
@@ -19,7 +20,7 @@ public class AuthorizationHelper {
 		return (credentials[0], credentials[1]);
 	}
 
-	public static string GetBearerToken(HttpRequest request) {
+	public static string GetBearerToken(HttpRequest request, ILogger logger = null) {
 		if (!request.Headers.ContainsKey("Authorization")) return null;
 
 		var authHeader = request.Headers["Authorization"].ToString();
@@ -38,7 +39,7 @@ public class AuthorizationHelper {
 	}
 
 	public static (string username, string realm, string nonce, string uri, string response, string opaque) GetDigestCredentials
-		(HttpRequest request) {
+		(HttpRequest request, ILogger logger = null) {
 		if (!request.Headers.ContainsKey("Authorization")) return (null, null, null, null, null, null);
 
 		var authHeader = request.Headers["Authorization"].ToString();
